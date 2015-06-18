@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-route.min.js"></script>
+
+</head>
+<body ng-app="myApp">
+
+    4. Factory concepts: (Factory helps to modularise and re-use data to be returned from server and be used in multiple controllers. Note that data fetched is persisted between views with same controller)<br />
+
+    <!--Place holder for all views SPA-->
+    <div data-ng-view=""></div>
+
+
+    <script>
+
+        var myApp = angular.module('myApp', ['ngRoute']);
+
+        myApp.config(function ($routeProvider) {
+            $routeProvider
+                .when('/view1',
+                {
+                    controller: 'SimpleController',
+                    templateUrl: 'Partials/view1.html'
+                })
+                .when('/view2', {
+                    controller: 'SimpleController',
+                    templateUrl: 'Partials/view2.html'
+                })
+                .otherwise({ redirectTo: '/view1' });
+
+        });
+
+        myApp.factory('SimpleFactory', function () {
+
+            var family = [
+                { name: 'Saravanan', age: '30' },
+                { name: 'Pavithra', age: '30' },
+                { name: 'paapa 1', age: '0.4' },
+                { name: 'paapa 2', age: '0.8' }
+            ];
+
+            var factory = {}; 
+            
+            factory.getFamily = function () {
+                return family;
+            };
+
+            factory.postPerson = function (person) { };
+
+            return factory;
+        });
+
+        //Method 3: Load controllers into an array and pass to controller arrat object modules - has advantage of prototyping
+
+        var controllers = [];
+        controllers.SimpleController = function ($scope, SimpleFactory) {
+
+
+            //$scope.family = SimpleFactory.getFamily(); //This is bad idea, better approach is to initialise 
+
+            $scope.family = [];
+
+            init();
+
+            function init() {
+                $scope.family = SimpleFactory.getFamily();
+            }
+
+
+            $scope.addPerson = function () {
+                $scope.family.push({ name: $scope.newPerson.name, age: $scope.newPerson.age });
+            }
+        };
+        myApp.controller(controllers);
+
+    </script>
+
+
+
+</body>
+
+</html>

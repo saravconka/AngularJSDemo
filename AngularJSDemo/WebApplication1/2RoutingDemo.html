@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-route.min.js"></script>
+
+</head>
+<body ng-app="myApp">
+
+    3. Routing concepts: <br />
+    
+    <!--Place holder for all views SPA-->
+    <div data-ng-view=""></div>
+
+
+    <script>
+
+        var myApp = angular.module('myApp', ['ngRoute']);
+
+        myApp.config(function ($routeProvider) {
+            $routeProvider
+                .when('/view1',
+                {
+                    controller: 'SimpleController',
+                    templateUrl: 'Partials/view1.html'
+                })
+                .when('/view2', {
+                    controller: 'SimpleController',
+                    templateUrl: 'Partials/view2.html'
+                })
+                .otherwise({ redirectTo: '/view1' });
+
+        });
+
+        //Method 1: create external function and pass controller in
+
+        //function SimpleController($scope) {
+        //    $scope.family = [
+        //        { name: 'Saravanan', age: '30' },
+        //        { name: 'Pavithra', age: '30' },
+        //        { name: 'paapa 1', age: '0.4' },
+        //        { name: 'paapa 2', age: '0.6' }
+        //    ];
+        //}
+        //myApp.controller('SimpleController', SimpleController);
+
+
+        //Method 2: directly add anonymous function
+
+        //myApp.controller('SimpleController', function ($scope) {
+        //    $scope.family = [
+        //        { name: 'Saravanan', age: '30' },
+        //        { name: 'Pavithra', age: '30' },
+        //        { name: 'paapa 1', age: '0.4' },
+        //        { name: 'paapa 2', age: '0.5' }
+        //    ];
+        //});
+
+        //Method 3: Load controllers into an array and pass to controller arrat object modules - has advantage of prototyping
+
+        var controllers = [];
+        controllers.SimpleController = function ($scope) {
+            $scope.family = [
+                { name: 'Saravanan', age: '30' },
+                { name: 'Pavithra', age: '30' },
+                { name: 'paapa 1', age: '0.4' },
+                { name: 'paapa 2', age: '0.8' }
+            ];
+
+            $scope.addPerson = function () {
+                $scope.family.push({ name: $scope.newPerson.name, age: $scope.newPerson.age });
+            }
+        };
+        myApp.controller(controllers);
+
+    </script>
+
+
+
+</body>
+
+</html>

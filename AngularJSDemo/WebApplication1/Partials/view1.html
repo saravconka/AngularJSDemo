@@ -1,0 +1,22 @@
+﻿<div data-ng-controller="SimpleController">
+
+    Name:
+    <input type="text" data-ng-model="filter.name" />
+    <br />
+
+    <ul>
+        <li data-ng-repeat="person in family | filter:filter.name | orderBy:'age'">{{person.name | uppercase}} age: {{person.age}}</li>
+    </ul>
+
+
+    <br/>
+    New Person Name:<br/>
+    <input type="text" data-ng-model="newPerson.name" /><br />
+    New Person Age:<br />
+    <input type="text" data-ng-model="newPerson.age" />
+    <br />
+    <button ng-click="addPerson()">Add Person</button>
+
+    <br/>
+    <a href="#/view2">View 2</a>
+</div>
