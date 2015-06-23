@@ -21,14 +21,19 @@
 	Age:<span> {{person.age}}</span>
 	
 	
-	<ul>
-		<li ng-repeat="person in familyList">
-			<span>Name:  {{person.name | lowercase }}</span>
-			<span>		age:  {{person.age}}</span>
-			<span>		Relationship:  {{person.relationship}}</span>	
-		</li>
-	</ul>
 	
+	
+	
+	<div>
+		<br/><span ng-show="familyList != null">Family Members:</span><br/>
+		<ul>
+			<li ng-repeat="person in familyList">
+				<span>Name:  {{person.name | lowercase }}</span>
+				<span>		age:  {{person.age}}</span>
+				<span>		Relationship:  {{person.relationship}}</span>	
+			</li>
+		</ul>
+	</div>
 </div>
 
 
