@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.js"></script>
+
+</head>
+
+<body ng-app="ft">
+
+
+<div ng-controller="FamilyController">
+
+
+	
+
+	
+	Family Tree:<br/>
+	
+	Enter name here:<input type="text" ng-model="personName"></input><button ng-click="findPerson()">find</button>
+	
+	{{personName}}
+	Age:<span> {{person.age}}</span>
+	
+	
+	<ul>
+		<li ng-repeat="person in familyList">
+			<span>Name:  {{person.name | lowercase }}</span>
+			<span>		age:  {{person.age}}</span>
+			<span>		Relationship:  {{person.relationship}}</span>	
+		</li>
+	</ul>
+	
+</div>
+
+
+<script>
+	var ft = angular.module('ft',[]);
+	
+	ft.controller('FamilyController', function($scope, PersonFactory){	
+	
+		$scope.personList = [];
+		$scope.person = [];
+		
+		//$scope.personList = PersonFactory.getPersonList();
+		
+		$scope.findPerson = function(){
+			//console.log('name: '+$scope.personName);			
+			$scope.person = PersonFactory.getPersonByName($scope.personName);			
+			//console.log('age: '+$scope.person.age);
+			
+			if($scope.person != null)
+			{
+				var familyList = PersonFactory.getFamilyList($scope.person.id); //PersonFactory.getPersonList();
+				if(familyList != null)				
+					$scope.familyList = familyList;
+			}
+			
+		}
+	
+	});
+	
+	
+	
+	
+	
+	ft.factory('PersonFactory',function(){
+	
+		var personList = [
+			{id:'1', name:'Nachiappan', age:66 },
+			{id:'2', name:'valliammai', age:60},
+			{id:'3', name:'sharadha', age:37},
+			{id:'4', name:'bhuvana', age:34},
+			{id:'5', name:'saravanan', age:30},
+			{id:'6', name:'pavithra', age:30}
+		];
+		
+		var relationshipList = [
+		
+			{id:'1', personId:'5', relatedPersonId:'1', relationship:'father'},
+			{id:'2', personId:'5', relatedPersonId:'2', relationship:'mother'},
+			{id:'3', personId:'5', relatedPersonId:'3', relationship:'sister'},
+			{id:'4', personId:'5', relatedPersonId:'4', relationship:'sister'},
+			{id:'5', personId:'5', relatedPersonId:'6', relationship:'spouse'}
+			
+		];
+		
+		var personFactory = {};
+		
+		
+		personFactory.getPersonByID = function(id) {
+			var person = [];
+			angular.forEach(personList, function(obj){				
+				if(obj.id == id)
+				{
+					person = obj;
+				}
+			});
+			return person;
+		}
+		
+		personFactory.getPersonByName = function(name) {
+			var person = [];
+			angular.forEach(personList, function(obj){				
+				if(obj.name.toLowerCase() == name.toLowerCase())
+				{
+					person = obj;
+				}
+			});
+			return person;
+		}
+		
+		personFactory.getPersonList = function() {
+			return personList;
+		}
+		
+		personFactory.getFamilyList = function(id) {
+			var familyList = [];			
+			
+			angular.forEach(relationshipList, function(obj){
+				if(obj.personId == id){
+					var familyMember = [];
+					familyMember = personFactory.getPersonByID(obj.relatedPersonId);
+					familyMember.relationship = obj.relationship;
+					familyList.push(familyMember);
+				}
+			});
+			
+			return familyList;
+		}
+		
+		return personFactory;		
+	
+	});
+
+</script>
+
+
+
+</body>
+</html>
