@@ -11,21 +11,14 @@
 
 
 	
-
-	
 	Family Tree:<br/>
 	
-	Enter name here:<input type="text" ng-model="personName"></input><button ng-click="findPerson()">find</button>
+	Enter name here:<input type="text" ng-model="personName" ng-keyup="findPerson()"></input><button ng-click="findPerson()">find</button>	{{personName}}
 	
-	{{personName}}
-	Age:<span> {{person.age}}</span>
-	
-	
-	
-	
-	
+	<br/>
+	<div ng-show="person.age != null && person.age > 0"> Age: {{person.age}}</div>
 	<div>
-		<br/><span ng-show="familyList != null">Family Members:</span><br/>
+		<br/><span ng-show="familyList != null && familyList.length > 0">Family Members:</span><br/>
 		<ul>
 			<li ng-repeat="person in familyList">
 				<span>Name:  {{person.name | lowercase }}</span>
